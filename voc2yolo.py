@@ -31,10 +31,10 @@ def convert(input_file):
                 ann_class = annot.find('./name').text
                 if ann_class == 'x':
                     ann_class = '10'
-                x = (xmin + (xmax - xmin)) / width
-                y = (ymin + (ymax - ymin)) / height
                 w = (xmax - xmin) / width
                 h = (ymax - ymin) / height
+                x = xmin / width + w/2
+                y = ymin / height + h/2
                 assert x > 0
                 assert y > 0
                 assert w > 0
