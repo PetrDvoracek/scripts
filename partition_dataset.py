@@ -1,5 +1,4 @@
-#!/home/pedro/anaconda3/bin/python
-
+#!/home/pedro/venv/venv/bin/python
 """ usage: partition_dataset.py [-h] [-i IMAGEDIR] [-o OUTPUTDIR] [-r RATIO] [-x]
 
 Partition dataset of images into training and testing sets
@@ -48,19 +47,25 @@ def iterate_dir(source, dest, ratio, copy_xml):
         filename = images[idx]
         copyfile(os.path.join(source, filename),
                  os.path.join(test_dir, filename))
-        if copy_xml:
-            xml_filename = os.path.splitext(filename)[0]+'.xml'
-            copyfile(os.path.join(source, xml_filename),
-                     os.path.join(test_dir,xml_filename))
+        try:
+            if copy_xml:
+                xml_filename = os.path.splitext(filename)[0]+'.xml'
+                copyfile(os.path.join(source, xml_filename),
+                        os.path.join(test_dir,xml_filename))
+        except FileNotFoundError:
+            print(f'xml annotations for {filename} not found')
         images.remove(images[idx])
 
     for filename in images:
         copyfile(os.path.join(source, filename),
                  os.path.join(train_dir, filename))
-        if copy_xml:
-            xml_filename = os.path.splitext(filename)[0]+'.xml'
-            copyfile(os.path.join(source, xml_filename),
-                     os.path.join(train_dir, xml_filename))
+        try:
+            if copy_xml:
+                xml_filename = os.path.splitext(filename)[0]+'.xml'
+                copyfile(os.path.join(source, xml_filename),
+                        os.path.join(train_dir, xml_filename))
+        except FileNotFoundError:
+            print(f'xml annotations for {filename} not found')
 
 
 def main():
